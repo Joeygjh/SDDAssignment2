@@ -12,3 +12,10 @@ def DisplayMainMenu():
     return option
 Part1 = DisplayMainMenu()
 
+
+
+
+#Display Exit Game - Winston
+def ExitGame():
+    EndGame = 'Hope you enjoy playing City-Building Strategy Game'
+    return EndGame
