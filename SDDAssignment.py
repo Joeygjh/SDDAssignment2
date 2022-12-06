@@ -7,9 +7,11 @@ import sys
 #Start New Game - Yat Soon
 GameBoard = 20
 TotalNumOfTurns = 16
+
+#Build building - Cheng Xuan
 NO_OF_SAME_Buildings = 8
-Buildings = [' R ', ' I ', ' C ', ' O ', ' * '] #R=HSE I=FAC C=SHP O=HWY *=BCH   # I updated the list to have spacing so that putting in Buildings will help.
-COLUMN_LABELS = string.ascii_uppercase[:GameBoard]     #To get 16 columns
+Buildings = [' R ', ' I ', ' C ', ' O ', ' * '] 
+COLUMN_LABELS = string.ascii_uppercase[:GameBoard]     
 
 def show_board(board):
     ''' Show board '''
@@ -27,7 +29,7 @@ def show_board(board):
     print(rowLine)
 
     for i in range(GameBoard):
-        if i >= 9:   #Introduce if statements to help out with the spacing. The single digits is the problem for the formatting
+        if i >= 9:   
             line = '%s|' % (i + 1)
         else:
             line = ' %s|' % (i + 1)
@@ -36,7 +38,8 @@ def show_board(board):
         print(line)
         print(rowLine)
 
-def check_adj_Buildings(board, i, j):        #i and j are the coordinates, this would check for left,right, up and down, UNTIL LINE 69 CALCULATING COORDINATES OF THE Buildings
+#Build building - Cheng Xuan
+def check_adj_Buildings(board, i, j):        
     ''' Check Adjacent Buildings '''
     adjacent_Buildings = []
     for x in [i-1, i+1]:
@@ -47,7 +50,7 @@ def check_adj_Buildings(board, i, j):        #i and j are the coordinates, this 
             adjacent_Buildings.append(board[i][x])
     return adjacent_Buildings
 
-def resumegame(data,coins):            #connected from data dictionary 
+def resumegame(data,coins):            
     ''' Start Game '''
     player = data['player']
     board = data['board']
@@ -60,7 +63,7 @@ def resumegame(data,coins):            #connected from data dictionary
         show_board(board)
 
         randomBuilding1 = random.choice(
-            [k for k, v in remaining_Buildings.items() if v > 0])       # dictionary iternation
+            [k for k, v in remaining_Buildings.items() if v > 0])       
         randomBuilding2 = random.choice(
             [k for k, v in remaining_Buildings.items() if v > 1])
         print(f'''
@@ -73,6 +76,7 @@ Coins: {coins}
     5. Save game
     0. Exit to main menu\n''')
         choice = input('Enter your choice: ')
+        #Build building - Cheng Xuan
         if choice == '1' or choice == '2':
             location = input('Build where? ').upper()
             i = int(location[1:3]) - 1
