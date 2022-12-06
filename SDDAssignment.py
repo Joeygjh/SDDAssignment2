@@ -1,61 +1,85 @@
+import os
+import pickle
 import random
+import string
+import sys
+
 #Start New Game - Yat Soon
-def StartNewGame():
-    board = [['','','','','','','','','','','','','','','','','','','',''],\
-            ['','','','','','','','','','','','','','','','','','','',''],\
-            ['','','','','','','','','','','','','','','','','','','',''],\
-            ['','','','','','','','','','','','','','','','','','','',''],\
-            ['','','','','','','','','','','','','','','','','','','',''],\
-            ['','','','','','','','','','','','','','','','','','','',''],\
-            ['','','','','','','','','','','','','','','','','','','',''],\
-            ['','','','','','','','','','','','','','','','','','','',''],\
-            ['','','','','','','','','','','','','','','','','','','',''],\
-            ['','','','','','','','','','','','','','','','','','','',''],\
-            ['','','','','','','','','','','','','','','','','','','',''],\
-            ['','','','','','','','','','','','','','','','','','','',''],\
-            ['','','','','','','','','','','','','','','','','','','',''],\
-            ['','','','','','','','','','','','','','','','','','','',''],\
-            ['','','','','','','','','','','','','','','','','','','',''],\
-            ['','','','','','','','','','','','','','','','','','','',''],\
-            ['','','','','','','','','','','','','','','','','','','',''],\
-            ['','','','','','','','','','','','','','','','','','','',''],\
-            ['','','','','','','','','','','','','','','','','','','',''],\
-            ['','','','','','','','','','','','','','','','','','','',''],\
-                ]
-    turn = 1
-    print('Turn {}'.format(turn))
+GameBoard = 20
+Total_NumOfTurns = 16
+NO_SAME_BUILDINGS = 8
+BUILDINGS = [' R ', ' I ', ' C ', ' O ', ' * '] 
+COLUMN_LABELS = string.ascii_uppercase[:GameBoard]     
 
-    # 5 Building, 8 Copies each
-    BuildingCode = ['R','I','C','O','*']
-
-    #Creation of Board
-    print("{:>5}{:>6}{:>6}{:>6}{:>6}{:>6}{:>6}{:>6}{:>6}{:>6}{:>6}{:>6}{:>6}{:>6}{:>6}{:>6}{:>6}{:>6}{:>6}{:>6}".format("A", "B", "C", "D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T"))
-    for x in range(len(board)):
-        column = len(board[x])
-        
-        print('  ' + '+-----'*column + '+')
-      
-        if x >=9:
-            print(x+1, end = '')
+def show_board(board):
+    ''' Show board '''
+    line = ''
+    for i in COLUMN_LABELS:
+        if len(i) < 2:
+            line += ' ' * 5 + i
         else:
-            print('',x+1, end = '')
-        for y in range(len(board[x])):
-            print('|{:^5}'.format(board[x][y]), end = '')
-        print('|')
-    print('  ' + '+-----'*column + '+')
-    Building1 = random.randint(0,4)
-    Building2 = random.randint(0,4)
-    #Selection
-    print('1. Build a {}'.format(BuildingCode[Building1]))
-    print('2. Build a {}'.format(BuildingCode[Building2]))
-    print('3. See remaining buildings')
-    print('4. See current score')
-    print()
-    print('5. Save game')
-    print('0. Exit to main menu')
-    option = input('Your choice? ')
-    return option,board,Building1,Building2,turn
-startNG = StartNewGame()
+            line += ' ' * 4 + i
+    print(line)
+
+    RowLine = '  +'
+    for i in range(GameBoard):
+        RowLine += '-----+'
+    print(RowLine)
+
+    for i in range(GameBoard):
+        if i >= 9:   
+            line = '%s|' % (i + 1)
+        else:
+            line = ' %s|' % (i + 1)
+        for j in range(GameBoard):
+            line += ' %s |' % board[i][j]
+        print(line)
+        print(RowLine)
+
+#1 
+
+def resumegame(data,coins):            
+    ''' Start Game '''
+    player = data['player']
+    board = data['board']
+    turn = data['turn']
+    remaining_buildings = data['remaining_buildings']
+
+    while turn < Total_NumOfTurns:
+        print(f'Turn {turn + 1}\n')
+
+        show_board(board)
+
+        RandomBuilding1 = random.choice(
+            [k for k, v in remaining_buildings.items() if v > 0])       
+        RandomBuilding2 = random.choice(
+            [k for k, v in remaining_buildings.items() if v > 1])
+        print(f'''
+Coins: {coins}
+
+    1. Build a {RandomBuilding1}
+    2. Build a {RandomBuilding2}
+    3. See remaining buildings
+    4. See current score
+    5. Save game
+    0. Exit to main menu\n''')
+        choice = input('Enter your choice: ')
+        if choice == '1' or choice == '2':
+                coins -= 1
+                turn += 1
+        #2     
+
+def StartNewGame():
+    coins = 16
+    ''' New Game '''
+    data = {}
+    data['board'] = [['   '] * GameBoard for i in range(GameBoard)]
+    data['turn'] = 0
+    data['remaining_buildings'] = {}
+    for i in BUILDINGS:
+        data['remaining_buildings'][i] 
+    data['player'] = input('Enter the player name: ')
+    resumegame(data,coins)
 
 
 
