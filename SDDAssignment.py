@@ -69,3 +69,10 @@ def StartNewGame():
     option = input('Your choice? ')
     return option,board,Building1,Building2,turn
 startNG = StartNewGame()
+
+
+
+#Display Exit Game - Winston
+def ExitGame():
+    EndGame = 'Hope you enjoy playing City-Building Strategy Game'
+    return EndGame
