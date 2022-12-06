@@ -6,10 +6,10 @@ import sys
 
 #Start New Game - Yat Soon
 GameBoard = 20
-Total_NumOfTurns = 16
-NO_SAME_BUILDINGS = 8
-BUILDINGS = [' R ', ' I ', ' C ', ' O ', ' * '] 
-COLUMN_LABELS = string.ascii_uppercase[:GameBoard]     
+TotalNumOfTurns = 16
+NO_OF_SAME_Buildings = 8
+Buildings = [' R ', ' I ', ' C ', ' O ', ' * '] #R=HSE I=FAC C=SHP O=HWY *=BCH   # I updated the list to have spacing so that putting in Buildings will help.
+COLUMN_LABELS = string.ascii_uppercase[:GameBoard]     #To get 16 columns
 
 def show_board(board):
     ''' Show board '''
@@ -21,53 +21,113 @@ def show_board(board):
             line += ' ' * 4 + i
     print(line)
 
-    RowLine = '  +'
+    rowLine = '  +'
     for i in range(GameBoard):
-        RowLine += '-----+'
-    print(RowLine)
+        rowLine += '-----+'
+    print(rowLine)
 
     for i in range(GameBoard):
-        if i >= 9:   
+        if i >= 9:   #Introduce if statements to help out with the spacing. The single digits is the problem for the formatting
             line = '%s|' % (i + 1)
         else:
             line = ' %s|' % (i + 1)
         for j in range(GameBoard):
             line += ' %s |' % board[i][j]
         print(line)
-        print(RowLine)
+        print(rowLine)
 
-#1 
+def check_adj_Buildings(board, i, j):        #i and j are the coordinates, this would check for left,right, up and down, UNTIL LINE 69 CALCULATING COORDINATES OF THE Buildings
+    ''' Check Adjacent Buildings '''
+    adjacent_Buildings = []
+    for x in [i-1, i+1]:
+        if x >= 0 and x < GameBoard and board[x][j] != '   ':
+            adjacent_Buildings.append(board[x][j])
+    for x in [j-1, j+1]:
+        if x >= 0 and x < GameBoard and board[i][x] != '   ':
+            adjacent_Buildings.append(board[i][x])
+    return adjacent_Buildings
 
-def resumegame(data,coins):            
+def resumegame(data,coins):            #connected from data dictionary 
     ''' Start Game '''
     player = data['player']
     board = data['board']
     turn = data['turn']
-    remaining_buildings = data['remaining_buildings']
+    remaining_Buildings = data['remaining_Buildings']
 
-    while turn < Total_NumOfTurns:
+    while turn < TotalNumOfTurns:
         print(f'Turn {turn + 1}\n')
 
         show_board(board)
 
-        RandomBuilding1 = random.choice(
-            [k for k, v in remaining_buildings.items() if v > 0])       
-        RandomBuilding2 = random.choice(
-            [k for k, v in remaining_buildings.items() if v > 1])
+        randomBuilding1 = random.choice(
+            [k for k, v in remaining_Buildings.items() if v > 0])       # dictionary iternation
+        randomBuilding2 = random.choice(
+            [k for k, v in remaining_Buildings.items() if v > 1])
         print(f'''
 Coins: {coins}
 
-    1. Build a {RandomBuilding1}
-    2. Build a {RandomBuilding2}
-    3. See remaining buildings
+    1. Build a {randomBuilding1}
+    2. Build a {randomBuilding2}
+    3. See remaining Buildings
     4. See current score
     5. Save game
     0. Exit to main menu\n''')
         choice = input('Enter your choice: ')
         if choice == '1' or choice == '2':
-                coins -= 1
-                turn += 1
-        #2     
+            location = input('Build where? ').upper()
+            i = int(location[1:3]) - 1
+            j = COLUMN_LABELS.index(location[0])
+            print(location[0])
+            print(j)
+            print(i)
+            if not (i >= 0 and i < GameBoard and j >= 0 and j < GameBoard):
+                print(f'Invalid location [{location}]')
+                continue
+            if turn != 0:
+                if not check_adj_Buildings(board, i, j):
+                    print('You must build next to an existing building')
+                    continue
+            building = randomBuilding1 if choice == '1' else randomBuilding2
+            board[i][j] = building
+            remaining_Buildings[building] -= 1
+            coins -= 1
+            turn += 1
+            
+            
+            
+    #     elif choice == '3':
+    #         print('Building \t Remaining')
+    #         print('-------- \t ---------')
+    #         for k, v in remaining_Buildings.items():
+    #             print(k, ' \t\t ', v)
+    #         input('\nEnter to continue\n')
+    #     elif choice == '4':
+    #         show_current_score(board)
+    #     elif choice == '5':
+    #         data = {}
+    #         data['player'] = player
+    #         data['board'] = board
+    #         data['turn'] = turn
+    #         data['remaining_Buildings'] = remaining_Buildings
+    #         save_game(data)
+    #     elif choice == '0':
+    #         return
+    #     else:
+    #         print(f'Invalid Option [{choice}] choosen')
+
+    # show_board(board)
+    # total_score = show_current_score(board)
+ 
+    # if turn == TotalNumOfTurns:
+    #     data = {}           #This is a dict and I will input 4 variables for now as shown for the next few lines
+    #     data['player'] = player
+    #     data['board'] = board
+    #     data['turn'] = turn
+    #     data['remaining_Buildings'] = remaining_Buildings           
+        # save_game(data)
+        # save_position(player, total_score)
+            
+           
 
 def StartNewGame():
     coins = 16
@@ -75,9 +135,9 @@ def StartNewGame():
     data = {}
     data['board'] = [['   '] * GameBoard for i in range(GameBoard)]
     data['turn'] = 0
-    data['remaining_buildings'] = {}
-    for i in BUILDINGS:
-        data['remaining_buildings'][i] 
+    data['remaining_Buildings'] = {}
+    for i in Buildings:
+        data['remaining_Buildings'][i] = NO_OF_SAME_Buildings
     data['player'] = input('Enter the player name: ')
     resumegame(data,coins)
 
