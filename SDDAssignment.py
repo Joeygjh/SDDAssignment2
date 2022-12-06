@@ -114,8 +114,10 @@ Coins: {coins}
     #         data['turn'] = turn
     #         data['remaining_Buildings'] = remaining_Buildings
     #         save_game(data)
-    #     elif choice == '0':
-    #         return
+
+    #Display Exit Game - Winston
+        elif choice == '0':
+            return
     #     else:
     #         print(f'Invalid Option [{choice}] choosen')
 
@@ -147,11 +149,8 @@ def StartNewGame():
 
 
 
-#Display Exit Game - Winston
-def ExitGame():
-    EndGame = 'Hope you enjoy playing City-Building Strategy Game'
-    return EndGame
-EXitG = ExitGame()
+
+
 
 #Display Main Menu - Joey
 def display_menu(): 
@@ -171,9 +170,11 @@ def display_menu():
         #     load_game() 
         # elif choice == '3': 
         #     show_score() 
-        # elif choice == '0': 
-        #     print('Bye!') 
-        #     sys.exit() 
+
+        #Display Exit Game - Winston
+        elif choice == '0': 
+            print('Hope you enjoyed playing City-Building Strategy Game!') 
+            sys.exit() 
         # else: 
         #     print(f'Invalid Option [{choice}] choosen') 
  
