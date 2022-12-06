@@ -1,6 +1,30 @@
 import random
 #Display Main Menu - Joey
-
+def display_menu(): 
+    ''' Display Menu''' 
+    while True: 
+        print(''' 
+    Welcome, mayor of Ngee Ann City! 
+    ---------------------------- 
+    1. Start new game 
+    2. Load saved game 
+    3. Show High Score 
+    0. Exit\n''') 
+        choice = input('Enter your choice: ') 
+        # if choice == '1': 
+        #     new_game() 
+        # elif choice == '2': 
+        #     load_game() 
+        # elif choice == '3': 
+        #     show_score() 
+        # elif choice == '0': 
+        #     print('Bye!') 
+        #     sys.exit() 
+        # else: 
+        #     print(f'Invalid Option [{choice}] choosen') 
+ 
+ 
+display_menu()
 
 #Start New Game - Yat Soon
 def StartNewGame():
