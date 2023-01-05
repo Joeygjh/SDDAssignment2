@@ -59,7 +59,7 @@ def resume_game(data):
     remaining_buildings = data['remaining_buildings']
     display_game_board(board)
 
-    while turn < TOTAL_NUM_TURNS:
+    while coins > 0:
         print(f'Turn: {turn + 1}     Point: {display_score(board)}          Coins: {coins}      ')
         
 
@@ -128,7 +128,7 @@ def resume_game(data):
     
     
  
-    if turn == TOTAL_NUM_TURNS:
+    if coins == 0:
         data = {}           
         data['player'] = player
         data['board'] = board
@@ -142,10 +142,10 @@ def resume_game(data):
 def display_highscore():
     ''' Display Score '''
     if not os.path.isfile('high.score'):
-        print('No Highscore Found')
+        print('No Highscores Could be Found')
         return
     data = pickle.load(open('high.score', 'rb'))
-    print('''--------- HIGH SCORES ---------''')
+    print('''--------- TOP 10 HIGH SCORES ---------''')
     line = '{:3}  {:12}  {:5}'.format('Rank', 'Player', 'Score')
     print(line)
     line = '{:>3}  {:>12}  {:>5}'.format('-'*3, '-'*12, '-'*5)
@@ -202,7 +202,7 @@ def start_new_game():
     data = {}
     data['board'] = [['   '] * GAMEBOARD for i in range(GAMEBOARD)]
     data['turn'] = 0
-    data['coins'] = 16
+    data['coins'] = 4
     data['remaining_buildings'] = {}
     for i in BUILDINGS:
         data['remaining_buildings'][i] = NO_OF_SAME_BUILDINGS
@@ -298,7 +298,6 @@ def display_coins(board,location):
     for i in range(GAMEBOARD):
         for j in range(GAMEBOARD):
             total_coins += calculate_coins(board, i, j)
-            print(total_coins)
     return total_coins
 
 #===YatSoon===#
@@ -340,6 +339,5 @@ def display_menu():
             sys.exit()
         else:
             print(f'Invalid Option [{choice}] choosen')
-
 
 display_menu()
