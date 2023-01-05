@@ -126,6 +126,7 @@ def resume_game(data):
     total_score = display_score(board)
     
     
+    
  
     if turn == TOTAL_NUM_TURNS:
         data = {}           
@@ -138,7 +139,7 @@ def resume_game(data):
         save_pos(player, total_score)
 
 #===YatSoon===#
-def display_score():
+def display_highscore():
     ''' Display Score '''
     if not os.path.isfile('high.score'):
         print('No Highscore Found')
@@ -180,7 +181,7 @@ def save_pos(player, total_score):
         data.append((player, total_score))
         pickle.dump(data, open('high.score', 'wb'))
         print('Congratulations! You are number 1 on the highscore board!')
-    display_score()
+    display_highscore()
 
 #===ChengXuan===#
 def display_building_names(name):
@@ -219,13 +220,40 @@ def calculate_coins(board, i, j):
     '''Calculate coins'''
     coins = 0
     building = board[i][j]
-    adjacent_buildings = check_adj_buildings(board, i, j)
-    if building == ' I ' :
-        if ' R ' in adjacent_buildings:
+    adjacent_buildings = check_adj_buildings(board, i, j)    
+    # if building == ' R ' :
+    #     if ' I ' in board[i][j+1]:
+    #         coins += 1
+    #     elif ' C ' in board[i][j+1]:
+    #         coins += 1
+    #     if ' I ' or ' C ' in board[i+1][j]:
+    #         coins += 1
+    #     elif ' C ' in board[i+1][j]:
+    #         coins += 1
+            
+    # elif building == ' I ' :
+    #     if ' R ' in board[i][j+1]:
+    #         coins += 1
+    #     if ' R ' in board[i+1][j]:
+    #         coins += 1
+    # elif building == ' C ':
+    #     if ' R ' in board[i][j+1]:
+    #         coins += 1
+    #     if ' R ' in board[i+1][j]:
+    #         coins += 1
+    # return coins
+
+    if building == ' R ' :
+        if ' I ' in adjacent_buildings:
             coins += 1
-    elif building == ' C ':
-        if ' R ' in adjacent_buildings:
+        if ' C ' in adjacent_buildings:
             coins += 1
+    # if building == ' I ' :
+    #     if ' R ' in adjacent_buildings:
+    #         coins += 1
+    # elif building == ' C ':
+    #     if ' R ' in adjacent_buildings:
+    #         coins += 1
     return coins
             
 #===YatSoon===#
@@ -267,9 +295,10 @@ def calculate_score(board, i, j):
 def display_coins(board,location):
     ''' Display coins '''
     total_coins = 0
-    i = int(location[1:3]) - 1 
-    j = COLUMN_LABELS.index(location[0])
-    total_coins += calculate_coins(board, i, j)
+    for i in range(GAMEBOARD):
+        for j in range(GAMEBOARD):
+            total_coins += calculate_coins(board, i, j)
+            print(total_coins)
     return total_coins
 
 #===YatSoon===#
@@ -305,7 +334,7 @@ def display_menu():
         elif choice == '2':
             load_saved_game()
         elif choice == '3':
-            display_score()
+            display_highscore()
         elif choice == '0':
             print('Bye!')
             sys.exit()
