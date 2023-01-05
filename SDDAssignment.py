@@ -49,6 +49,27 @@ def check_adj_buildings(board, i, j):
 
     return adjacent_buildings
 
+#===YatSoon===#
+def check_rightdown_buildings(board, i, j):       
+    ''' Get Buildings to the right and below '''
+    rightdown_buildings = []
+    for x in [i+1]:
+        if x >= 0 and x < GAMEBOARD and board[x][j] != '   ':
+            rightdown_buildings.append(board[x][j])
+    for x in [j+1]:
+        if x >= 0 and x < GAMEBOARD and board[i][x] != '   ':
+            rightdown_buildings.append(board[i][x])
+    return rightdown_buildings
+
+#===YatSoon===#
+def check_buildings_for_road(board, i, j):       
+    ''' Get Buildings for roads '''
+    for_road_buildings = []
+    for x in [i+1]:
+        if x >= 0 and x < GAMEBOARD and board[x][j] != '   ':
+            for_road_buildings.append(board[x][j])
+    return for_road_buildings
+
 #===YatSoon, ChengXuan===#
 def resume_game(data):           
     ''' Resume Game '''
@@ -244,9 +265,9 @@ def calculate_coins(board, i, j):
     # return coins
 
     if building == ' R ' :
-        if ' I ' in adjacent_buildings:
+        if ' I ' in check_rightdown_buildings(board, i, j):
             coins += 1
-        if ' C ' in adjacent_buildings:
+        if ' C ' in check_rightdown_buildings(board, i, j):
             coins += 1
     # if building == ' I ' :
     #     if ' R ' in adjacent_buildings:
@@ -263,8 +284,9 @@ def calculate_score(board, i, j):
     building = board[i][j]
     adjacent_buildings = check_adj_buildings(board, i, j)
     if building == ' * ':
-        if board[i][j+1] == ' * ':
+        if ' * ' in check_buildings_for_road(board, i, j):
             score += 1
+        
     elif building == ' R ':
         if ' I ' in adjacent_buildings:
             score += 1
@@ -278,16 +300,12 @@ def calculate_score(board, i, j):
     elif building == ' I ':
         score += 1
     elif building == ' C ':
-        if board[i][j+1] == ' C ':
-            score += 1
-        if board[i+1][j] == ' C ':
-            score += 1
+        if ' C ' in check_rightdown_buildings(board, i, j):
+            score +=1
  
     elif building == ' O ' :
-        if board[i][j+1] == ' O ':
-            score += 1
-        if board[i+1][j] == ' O ':
-            score += 1
+        if ' O ' in check_rightdown_buildings(board, i, j):
+            score +=1
  
     return score
 
