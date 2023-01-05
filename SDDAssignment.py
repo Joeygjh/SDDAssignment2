@@ -4,17 +4,14 @@ import random
 import string
 import sys
 
-GameBoard = 20
-
-
-
-TOTAL_TURNS = 16
+GAMEBOARD = 20
+TOTAL_NUM_TURNS = 16
 NO_OF_SAME_BUILDINGS = 8
 BUILDINGS = [' R ', ' I ', ' C ', ' O ', ' * '] 
-COLUMN_LABELS = string.ascii_uppercase[:GameBoard]     
+COLUMN_LABELS = string.ascii_uppercase[:GAMEBOARD]     
 
 
-def display_board(board):
+def display_game_board(board):
     ''' Show board '''
     line = ''
     for i in COLUMN_LABELS:
@@ -25,16 +22,16 @@ def display_board(board):
     print(line)
 
     dashLine = '  +'
-    for i in range(GameBoard):
+    for i in range(GAMEBOARD):
         dashLine += '-----+'
     print(dashLine)
 
-    for i in range(GameBoard):
+    for i in range(GAMEBOARD):
         if i >= 9:   
             line = '%s|' % (i + 1)
         else:
             line = ' %s|' % (i + 1)
-        for j in range(GameBoard):
+        for j in range(GAMEBOARD):
             line += ' %s |' % board[i][j]
         print(line)
         print(dashLine)
@@ -44,25 +41,25 @@ def check_adj_buildings(board, i, j):
     ''' Get Adjacent Buildings '''
     adjacent_buildings = []
     for x in [i-1, i+1]:
-        if x >= 0 and x < GameBoard and board[x][j] != '   ':
+        if x >= 0 and x < GAMEBOARD and board[x][j] != '   ':
             adjacent_buildings.append(board[x][j])
     for x in [j-1, j+1]:
-        if x >= 0 and x < GameBoard and board[i][x] != '   ':
+        if x >= 0 and x < GAMEBOARD and board[i][x] != '   ':
             adjacent_buildings.append(board[i][x])
 
     return adjacent_buildings
 
 
 def resume_game(data):           
-    ''' Start Game '''
+    ''' Resume Game '''
     player = data['player']
     board = data['board']
     turn = data['turn']
     coins = data['coins']
     remaining_buildings = data['remaining_buildings']
-    display_board(board)
+    display_game_board(board)
 
-    while turn < TOTAL_TURNS:
+    while turn < TOTAL_NUM_TURNS:
         print(f'Turn: {turn + 1}     Point: {display_score(board)}          Coins: {coins}      ')
         
 
@@ -95,7 +92,7 @@ def resume_game(data):
                 print(f'Invalid location [{location}]')
                 continue
 
-            if not (i >= 0 and i < GameBoard and j >= 0 and j < GameBoard):
+            if not (i >= 0 and i < GAMEBOARD and j >= 0 and j < GAMEBOARD):
                 print(f'Invalid location [{location}]')
                 continue
             
@@ -110,7 +107,7 @@ def resume_game(data):
             coins -= 1
             turn += 1
             coins += display_coins(board,location)
-            display_board(board)
+            display_game_board(board)
         elif choice == '3':
             display_score(board)
         elif choice == '4':
@@ -126,12 +123,12 @@ def resume_game(data):
         else:
             print(f'Invalid Option [{choice}] choosen')
 
-    display_board(board)
+    display_game_board(board)
     total_score = display_score(board)
     
     
  
-    if turn == TOTAL_TURNS:
+    if turn == TOTAL_NUM_TURNS:
         data = {}           
         data['player'] = player
         data['board'] = board
@@ -143,7 +140,7 @@ def resume_game(data):
 
 
 def display_score():
-    ''' Show Score '''
+    ''' Display Score '''
     if not os.path.isfile('high.score'):
         print('No Highscore Found')
         return
@@ -161,7 +158,7 @@ def display_score():
 
     
 def save_pos(player, total_score):
-    ''' Save Position '''
+    ''' Save Position of player '''
     data = []
     if os.path.isfile('high.score'):
         old_data = pickle.load(open('high.score', 'rb'))
@@ -200,9 +197,9 @@ def display_building_names(name):
 
 
 def start_new_game():
-    ''' New Game '''
+    ''' Start New Game '''
     data = {}
-    data['board'] = [['   '] * GameBoard for i in range(GameBoard)]
+    data['board'] = [['   '] * GAMEBOARD for i in range(GAMEBOARD)]
     data['turn'] = 0
     data['coins'] = 16
     data['remaining_buildings'] = {}
@@ -213,22 +210,25 @@ def start_new_game():
 
 
 def load_saved_game():
-    ''' Load Game '''
+    ''' Load saved Game '''
     data = pickle.load(open('game.save', 'rb'))
     resume_game(data)
 
 def calculate_coins(board, i, j):
-    '''Get score of coins'''
+    '''Calculate coins'''
     coins = 0
     building = board[i][j]
     adjacent_buildings = check_adj_buildings(board, i, j)
     if building == ' I ' :
         if ' R ' in adjacent_buildings:
             coins += 1
+    elif building == ' C ':
+        if ' R ' in adjacent_buildings:
+            coins += 1
     return coins
             
 def calculate_score(board, i, j):
-    ''' Get score of a building '''
+    ''' Calculate Score '''
     score = 0
     building = board[i][j]
     adjacent_buildings = check_adj_buildings(board, i, j)
@@ -263,7 +263,7 @@ def calculate_score(board, i, j):
 
 
 def display_coins(board,location):
-    ''' Show additional coins '''
+    ''' Display coins '''
     total_coins = 0
     i = int(location[1:3]) - 1 
     j = COLUMN_LABELS.index(location[0])
@@ -272,10 +272,10 @@ def display_coins(board,location):
 
 
 def display_score(board):
-    ''' Show current score '''
+    ''' display current score '''
     total_score = 0
-    for i in range(GameBoard):
-        for j in range(GameBoard):
+    for i in range(GAMEBOARD):
+        for j in range(GAMEBOARD):
             total_score += calculate_score(board, i, j)
     
     return total_score
