@@ -242,39 +242,18 @@ def calculate_coins(board, i, j):
     coins = 0
     building = board[i][j]
     adjacent_buildings = check_adj_buildings(board, i, j)    
-    # if building == ' R ' :
-    #     if ' I ' in board[i][j+1]:
-    #         coins += 1
-    #     elif ' C ' in board[i][j+1]:
-    #         coins += 1
-    #     if ' I ' or ' C ' in board[i+1][j]:
-    #         coins += 1
-    #     elif ' C ' in board[i+1][j]:
-    #         coins += 1
-            
-    # elif building == ' I ' :
-    #     if ' R ' in board[i][j+1]:
-    #         coins += 1
-    #     if ' R ' in board[i+1][j]:
-    #         coins += 1
-    # elif building == ' C ':
-    #     if ' R ' in board[i][j+1]:
-    #         coins += 1
-    #     if ' R ' in board[i+1][j]:
-    #         coins += 1
-    # return coins
-
     if building == ' R ' :
         if ' I ' in check_rightdown_buildings(board, i, j):
             coins += 1
-        if ' C ' in check_rightdown_buildings(board, i, j):
+        elif ' C ' in check_rightdown_buildings(board, i, j):
             coins += 1
-    # if building == ' I ' :
-    #     if ' R ' in adjacent_buildings:
-    #         coins += 1
-    # elif building == ' C ':
-    #     if ' R ' in adjacent_buildings:
-    #         coins += 1
+    elif building == ' I ' :
+        if ' R ' in check_rightdown_buildings(board, i, j):
+            coins += 1
+    elif building == ' C ':
+        if ' R ' in check_rightdown_buildings(board, i, j):
+            coins += 1
+    
     return coins
             
 #===YatSoon===#
@@ -316,6 +295,8 @@ def display_coins(board,location):
     for i in range(GAMEBOARD):
         for j in range(GAMEBOARD):
             total_coins += calculate_coins(board, i, j)
+    if total_coins >= 1:  
+                print(f'coins in calculate function: {total_coins}')
     return total_coins
 
 #===YatSoon===#
