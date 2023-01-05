@@ -10,7 +10,7 @@ NO_OF_SAME_BUILDINGS = 8
 BUILDINGS = [' R ', ' I ', ' C ', ' O ', ' * '] 
 COLUMN_LABELS = string.ascii_uppercase[:GAMEBOARD]     
 
-
+#===Joey===#
 def display_game_board(board):
     ''' Show board '''
     line = ''
@@ -36,7 +36,7 @@ def display_game_board(board):
         print(line)
         print(dashLine)
 
-
+#==ChengXuan==#
 def check_adj_buildings(board, i, j):       
     ''' Get Adjacent Buildings '''
     adjacent_buildings = []
@@ -49,7 +49,7 @@ def check_adj_buildings(board, i, j):
 
     return adjacent_buildings
 
-
+#===YatSoon, ChengXuan===#
 def resume_game(data):           
     ''' Resume Game '''
     player = data['player']
@@ -65,10 +65,9 @@ def resume_game(data):
 
 
         randombuilding1 = random.choice(
-            [k for k, v in remaining_buildings.items() if v > 0])       # dictionary iternation
+            [k for k, v in remaining_buildings.items() if v > 0])      
         randgombuilding2 = random.choice(
             [k for k, v in remaining_buildings.items() if v > 1])
-        #In order to make sure both buildings are different I put a while function for random buildings
         while randombuilding1 == randgombuilding2:
             randgombuilding2 = random.choice(
             [k for k, v in remaining_buildings.items() if v > 1])
@@ -138,7 +137,7 @@ def resume_game(data):
         save_game(data)
         save_pos(player, total_score)
 
-
+#===YatSoon===#
 def display_score():
     ''' Display Score '''
     if not os.path.isfile('high.score'):
@@ -156,7 +155,7 @@ def display_score():
         line = '{:>3}  {:12}  {:>3}'.format(rank , k, v)
         print(line)
 
-    
+#===Winston, ChengXuan===#
 def save_pos(player, total_score):
     ''' Save Position of player '''
     data = []
@@ -183,6 +182,7 @@ def save_pos(player, total_score):
         print('Congratulations! You are number 1 on the highscore board!')
     display_score()
 
+#===ChengXuan===#
 def display_building_names(name):
     if name == ' I ':
         return 'Industry (I)'
@@ -195,7 +195,7 @@ def display_building_names(name):
     elif name == ' * ':
         return 'Road (*)'
 
-
+#===YatSoon===#
 def start_new_game():
     ''' Start New Game '''
     data = {}
@@ -208,12 +208,13 @@ def start_new_game():
     data['player'] = input('Enter the player name: ')
     resume_game(data)
 
-
+#===Joey===#
 def load_saved_game():
     ''' Load saved Game '''
     data = pickle.load(open('game.save', 'rb'))
     resume_game(data)
 
+#===YatSoon===#
 def calculate_coins(board, i, j):
     '''Calculate coins'''
     coins = 0
@@ -227,6 +228,7 @@ def calculate_coins(board, i, j):
             coins += 1
     return coins
             
+#===YatSoon===#
 def calculate_score(board, i, j):
     ''' Calculate Score '''
     score = 0
@@ -261,7 +263,7 @@ def calculate_score(board, i, j):
  
     return score
 
-
+#===YatSoon===#
 def display_coins(board,location):
     ''' Display coins '''
     total_coins = 0
@@ -270,7 +272,7 @@ def display_coins(board,location):
     total_coins += calculate_coins(board, i, j)
     return total_coins
 
-
+#===YatSoon===#
 def display_score(board):
     ''' display current score '''
     total_score = 0
@@ -280,13 +282,13 @@ def display_score(board):
     
     return total_score
 
-
+#===Winston===#
 def save_game(data):
     ''' Save Game '''
     pickle.dump(data, open('game.save', 'wb'))
     print('Saved game successfully!')
 
-
+#===Joey===#
 def display_menu():
     ''' Display Menu'''
     while True:
