@@ -65,9 +65,9 @@ def check_rightdown_buildings(board, i, j):
 def check_buildings_for_road(board, i, j):       
     ''' Get Buildings for roads '''
     for_road_buildings = []
-    for x in [i+1]:
-        if x >= 0 and x < GAMEBOARD and board[x][j] != '   ':
-            for_road_buildings.append(board[x][j])
+    for x in [j+1]:
+        if x >= 0 and x < GAMEBOARD and board[i][x] != '   ':
+            for_road_buildings.append(board[i][x])
     return for_road_buildings
 
 #===YatSoon, ChengXuan===#
@@ -82,9 +82,6 @@ def resume_game(data):
 
     while coins > 0:
         print(f'Turn: {turn + 1}     Point: {display_score(board)}          Coins: {coins}      ')
-        
-
-
         randombuilding1 = random.choice(
             [k for k, v in remaining_buildings.items() if v > 0])      
         randgombuilding2 = random.choice(
