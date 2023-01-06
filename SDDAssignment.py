@@ -170,9 +170,12 @@ def display_highscore():
     print(line)
     rank = 0
     for (k, v) in data:
-        rank += 1
-        line = '{:>3}  {:12}  {:>3}'.format(rank , k, v)
-        print(line)
+        if rank <10:    
+            rank += 1
+            line = '{:>3}  {:12}  {:>3}'.format(rank , k, v)
+            print(line)
+        else:
+            break
 
 #===Winston, ChengXuan===#
 def save_pos(player, total_score):
@@ -220,7 +223,7 @@ def start_new_game():
     data = {}
     data['board'] = [['   '] * GAMEBOARD for i in range(GAMEBOARD)]
     data['turn'] = 0
-    data['coins'] = 4
+    data['coins'] = 2
     data['remaining_buildings'] = {}
     for i in BUILDINGS:
         data['remaining_buildings'][i] = NO_OF_SAME_BUILDINGS
