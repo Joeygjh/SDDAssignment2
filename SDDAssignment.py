@@ -223,7 +223,7 @@ def start_new_game():
     data = {}
     data['board'] = [['   '] * GAMEBOARD for i in range(GAMEBOARD)]
     data['turn'] = 0
-    data['coins'] = 2
+    data['coins'] = 16
     data['remaining_buildings'] = {}
     for i in BUILDINGS:
         data['remaining_buildings'][i] = NO_OF_SAME_BUILDINGS
